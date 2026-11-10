@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Web Quest Clicker</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e1e2f, #2a2a40);
+            color: #ffffff;
+            text-align: center;
+            padding-top: 50px;
+        }
+        .game-card {
+            background: #252538;
+            border: 2px solid #00ffcc;
+            display: inline-block;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            width: 350px;
+        }
+        h1 { color: #00ffcc; font-size: 24px; margin-bottom: 10px; }
+        .stats { font-size: 18px; margin: 15px 0; color: #ffcc00; }
+        button {
+            background: #00ffcc;
+            color: #121212;
+            border: none;
+            padding: 12px 20px;
+            margin: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: 0.2s;
+            width: 100%;
+        }
+        button:hover { background: #00cca3; transform: scale(1.02); }
+        button:disabled { background: #555; color: #888; cursor: not-allowed; }
+        #log { margin-top: 15px; font-size: 13px; color: #aaa; min-height: 40px; }
+    </style>
+</head>
+<body>
+
+    <div class="game-card">
+        <h1>⚔️ Web Quest Clicker</h1>
+        <div class="stats">
+            Gold: <span id="gold">0</span><br>
+            Hero Level: <span id="level">1</span>
+        </div>
+        
+        <p id="log">Welcome, adventurer! Click below to hunt monsters and earn gold.</p>
+
+        <button onclick="fightMonster()">⚔️ Fight Goblin (+10 Gold)</button>
+        <button onclick="levelUp()" id="lvlBtn" disabled>⭐ Level Up (Cost: 50 Gold)</button>
+    </div>
+
+    <script>
+        let gold = 0;
+        let level = 1;
+
+        function updateUI() {
+            document.getElementById("gold").innerText = gold;
+            document.getElementById("level").innerText = level;
+            
+            let cost = level * 50;
+            let lvlBtn = document.getElementById("lvlBtn");
+            if (gold >= cost) {
+                lvlBtn.innerText = `⭐ Level Up (Cost: ${cost} Gold)`;
+                lvlBtn.disabled = false;
+            } else {
+                lvlBtn.innerText = `⭐ Need ${cost} Gold to Level Up`;
+                lvlBtn.disabled = true;
+            }
+        }
+
+        function fightMonster() {
+            let earned = level * 10;
+            gold += earned;
+            document.getElementById("log").innerText = `You defeated a monster and earned ${earned} gold!`;
+            updateUI();
+        }
+
+        function levelUp() {
+            let cost = level * 50;
+            if (gold >= cost) {
+                gold -= cost;
+                level += 1;
+                document.getElementById("log").innerText = `🎉 Level Up! You are now Level ${level}! Monsters give more gold now.`;
+                updateUI();
+            }
+        }
+    </script>
+
+</body>
+</html>
